@@ -1,0 +1,24 @@
+{
+  "name": "jsteractor",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "description": "",
+  "scripts": {
+    "run": "node src/index.js",
+    "test": "jest",
+    "test:dev": "jest --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.16.5",
+    "@babel/node": "^7.16.5",
+    "@babel/preset-env": "^7.16.5",
+    "@types/jest": "^27.0.3",
+    "babel-jest": "^27.4.5",
+    "jest": "^27.4.5",
+    "prettier": "^2.5.1"
+  }
+}

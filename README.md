@@ -1,0 +1,6 @@
+- Lifecycle Hooks
+- Maybe logger?
+- Explore RxJS
+- NestJS Injectable?
+- Typescript
+- Debug Mode
