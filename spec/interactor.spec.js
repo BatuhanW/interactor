@@ -18,7 +18,7 @@ describe('Interactor', () => {
     describe('when failure', () => {
       describe('when InteractorFailure error', () => {
         it('throws with merged context', async () => {
-          expect.assertions(4);
+          expect.assertions(5);
           const callFn = (context) => context.fail({ error: 'test' });
           const rollbackFn = (context) => (context.rolledBack = true);
 
@@ -28,6 +28,7 @@ describe('Interactor', () => {
             await interactor.call({ test: 1 });
           } catch (e) {
             expect(e).toBeInstanceOf(InteractorFailure);
+            expect(e.name).toStrictEqual('InteractorFailure');
             expect(e.context.error).toStrictEqual('test');
             expect(e.context.test).toStrictEqual(1);
             expect(e.context.rolledBack).toBeUndefined();

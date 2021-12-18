@@ -1,19 +1,20 @@
 import { InteractorFailure } from './failure';
+import { AnyObject, Interactor } from './interactor';
 
 export class Context {
-  static build(context = {}) {
+  static build<Params = AnyObject>(context: Context | AnyObject) {
     if (context instanceof Context) {
-      return context;
+      return context as Context & Params;
     } else {
-      return new this(context);
+      return new this(context) as Context & Params;
     }
   }
 
-  _isFailure = false;
-  _calledInteractors = [];
-  _isRolledBack = false;
+  private _isFailure: boolean = false;
+  private _calledInteractors: Interactor[] = [];
+  private _isRolledBack: boolean = false;
 
-  constructor(context = {}) {
+  constructor(context: AnyObject = {}) {
     Object.defineProperties(
       this,
       Object.entries(context).reduce((acc, [key, value]) => {
@@ -30,15 +31,15 @@ export class Context {
     );
   }
 
-  isSuccess() {
+  public isSuccess(): boolean {
     return !this.isFailure();
   }
 
-  isFailure() {
+  public isFailure(): boolean {
     return this._isFailure;
   }
 
-  fail(context = {}) {
+  public fail(context: AnyObject = {}): Promise<void> {
     Object.defineProperties(
       this,
       Object.entries(context).reduce((acc, [key, value]) => {
@@ -59,7 +60,7 @@ export class Context {
     throw new InteractorFailure(this);
   }
 
-  _markAsCalled(interactor) {
+  _markAsCalled(interactor: Interactor) {
     this._calledInteractors.push(interactor);
   }
 

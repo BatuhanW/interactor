@@ -20,7 +20,7 @@ describe('Organizer', () => {
 
       const organizer = initializeOrganizer(interactor1, interactor2);
 
-      expect(organizer.interactors).toStrictEqual([interactor1, interactor2]);
+      expect(organizer.Interactors).toStrictEqual([interactor1, interactor2]);
     });
   });
 
@@ -126,7 +126,10 @@ describe('Organizer', () => {
         const interactor3 = buildInteractor(callPusherFn(3), rollbackPusherFn(3));
         const interactor4 = buildInteractor(callPusherFn(4), rollbackPusherFn(4));
         const interactor5 = buildInteractor(callPusherFn(5), rollbackPusherFn(5));
-        const interactor6 = buildInteractor(callPusherFn(6, { throwsInteractorFailure: true }), rollbackPusherFn(6));
+        const interactor6 = buildInteractor(
+          callPusherFn(6, { throwsInteractorFailure: true }),
+          rollbackPusherFn(6),
+        );
 
         const subOrganizer1 = buildOrganizer(interactor1, interactor2);
         const subOrganizer2 = buildOrganizer(interactor3, interactor4);

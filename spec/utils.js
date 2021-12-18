@@ -1,4 +1,7 @@
-export const assertRollbackContext = (context, { withInteractorFailure } = { withInteractorFailure: true }) => {
+export const assertRollbackContext = (
+  context,
+  { withInteractorFailure } = { withInteractorFailure: true },
+) => {
   expect(context.initialValue).toStrictEqual(true);
 
   expect(context.called1).toStrictEqual(true);
