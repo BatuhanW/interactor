@@ -20,7 +20,7 @@ describe('Organizer', () => {
 
       const organizer = initializeOrganizer(interactor1, interactor2);
 
-      expect(organizer.interactors).toStrictEqual([interactor1, interactor2]);
+      expect(organizer.Interactors).toStrictEqual([interactor1, interactor2]);
     });
   });
 
