@@ -1,6 +1,19 @@
 import { InteractorFailure } from './failure';
 import { AnyObject, Interactor } from './interactor';
 
+const buildDefinePropertiesDescriptor = (context: AnyObject, writable = true) =>
+  Object.entries(context).reduce((acc, [key, value]) => {
+    return {
+      ...acc,
+      [key]: {
+        enumerable: true,
+        configurable: true,
+        value,
+        writable,
+      },
+    };
+  }, {});
+
 export class Context {
   static build<Params = AnyObject>(context: Context | AnyObject) {
     if (context instanceof Context) {
@@ -15,20 +28,7 @@ export class Context {
   private _isRolledBack: boolean = false;
 
   constructor(context: AnyObject = {}) {
-    Object.defineProperties(
-      this,
-      Object.entries(context).reduce((acc, [key, value]) => {
-        return {
-          ...acc,
-          [key]: {
-            enumerable: true,
-            configurable: true,
-            value,
-            writable: true,
-          },
-        };
-      }, {}),
-    );
+    Object.defineProperties(this, buildDefinePropertiesDescriptor(context));
   }
 
   public isSuccess(): boolean {
@@ -40,20 +40,7 @@ export class Context {
   }
 
   public fail(context: AnyObject = {}): Promise<void> {
-    Object.defineProperties(
-      this,
-      Object.entries(context).reduce((acc, [key, value]) => {
-        return {
-          ...acc,
-          [key]: {
-            enumerable: true,
-            configurable: true,
-            value,
-            writable: false,
-          },
-        };
-      }, {}),
-    );
+    Object.defineProperties(this, buildDefinePropertiesDescriptor(context, false));
 
     this._isFailure = true;
 
