@@ -11,20 +11,13 @@ interface InteractorResult<
 export type AnyObject = Record<string, any>;
 
 export class Interactor<Input extends AnyObject = AnyObject, Output extends AnyObject = AnyObject> {
-  static async safeCall(context = {}) {
-    const interactor = new this(context);
-
-    await interactor._safeRun();
-
-    return { result: interactor.context };
-  }
-
   static async call<Params extends AnyObject = AnyObject, Result extends AnyObject = AnyObject>(
     context: Params,
+    { catchInteractorFailure } = { catchInteractorFailure: true },
   ): Promise<InteractorResult<Params, Result>> {
     const interactor: Interactor<Params, Result> = new this(context);
 
-    await interactor._run();
+    await interactor._run(catchInteractorFailure);
 
     return { result: interactor.context };
   }
@@ -35,22 +28,14 @@ export class Interactor<Input extends AnyObject = AnyObject, Output extends AnyO
     this.context = Context.build<Input & Output>(context);
   }
 
-  async _safeRun() {
-    try {
-      await this._run();
-    } catch (e) {
-      if (e instanceof InteractorFailure) return;
-
-      throw e;
-    }
-  }
-
-  async _run() {
+  async _run(catchInteractorFailure: boolean) {
     try {
       await this.call();
       this.context._markAsCalled(this);
     } catch (e) {
       await this.context._rollback();
+
+      if (catchInteractorFailure && e instanceof InteractorFailure) return;
 
       throw e;
     }

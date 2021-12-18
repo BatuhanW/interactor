@@ -43,11 +43,14 @@ const testInvalidInteractor = async () => {
 };
 
 const testValid = async () => {
-  const { result } = await InvalidTestInteractor.call<Input, Output>({
-    numberInput: 1,
-    strInput: 'str',
-    boolInput: true,
-  });
+  const { result } = await InvalidTestInteractor.call<Input, Output>(
+    {
+      numberInput: 1,
+      strInput: 'str',
+      boolInput: true,
+    },
+    { catchInteractorFailure: false },
+  );
 
   boolTest(result.isFailure());
   boolTest(result.isSuccess());

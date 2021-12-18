@@ -50,18 +50,18 @@ describe('Organizer', () => {
   describe('rollback', () => {
     describe('single organizer', () => {
       describe('when InteractorFailure error', () => {
-        it('with safeCall', async () => {
+        it('with default', async () => {
           expect.assertions(8);
           const interactors = buildThreeInteractors({ throwsInteractorFailure: true });
 
           const organizer = buildOrganizer(...interactors);
 
-          const { result } = await organizer.safeCall({ initialValue: true });
+          const { result } = await organizer.call({ initialValue: true });
 
           assertRollbackContext(result);
         });
 
-        it('with call', async () => {
+        it('with catchInteractorFailure false', async () => {
           expect.assertions(8);
 
           const interactors = buildThreeInteractors({ throwsInteractorFailure: true });
@@ -69,7 +69,7 @@ describe('Organizer', () => {
           const organizer = buildOrganizer(...interactors);
 
           try {
-            await organizer.call({ initialValue: true });
+            await organizer.call({ initialValue: true }, { catchInteractorFailure: false });
           } catch (error) {
             assertRollbackContext(error.context);
           }
@@ -77,7 +77,7 @@ describe('Organizer', () => {
       });
 
       describe('when Any other error', () => {
-        describe('with safeCall', () => {
+        describe('with default', () => {
           it('it throws', async () => {
             expect.assertions(8);
 
@@ -88,7 +88,7 @@ describe('Organizer', () => {
             const context = Context.build({ initialValue: true });
 
             try {
-              await organizer.safeCall(context);
+              await organizer.call(context);
             } catch (e) {
               expect(e.message).toStrictEqual('TestError');
 
@@ -97,7 +97,7 @@ describe('Organizer', () => {
           });
         });
 
-        describe('with call', () => {
+        describe('with catchInteractorFailure false', () => {
           it('it throws again', async () => {
             expect.assertions(8);
 
@@ -137,7 +137,7 @@ describe('Organizer', () => {
 
         const mainOrganizer = buildOrganizer(subOrganizer1, subOrganizer2, subOrganizer3);
 
-        const { result } = await mainOrganizer.safeCall({ called: [], rolledBack: [] });
+        const { result } = await mainOrganizer.call({ called: [], rolledBack: [] });
 
         expect(result.called).toStrictEqual([1, 2, 3, 4, 5, 6]);
 

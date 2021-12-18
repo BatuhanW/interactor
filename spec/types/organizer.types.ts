@@ -35,18 +35,21 @@ class Interactor2 extends Interactor<Input1 & Input2, Output2> {
 }
 
 class TestOrganizer extends Organizer {
-  interactors = [Interactor1, Interactor2];
+  Interactors = [Interactor1, Interactor2];
 }
 
 const testInvalid = async () => {
-  const { result } = await TestOrganizer.call<Input1 & Input2, Output1 & Output2>({
-    numberInput1: true,
-    numberInput2: false,
-    strInput1: 1,
-    strInput2: 2,
-    boolInput1: 'true',
-    boolInput2: 'false',
-  });
+  const { result } = await TestOrganizer.call<Input1 & Input2, Output1 & Output2>(
+    {
+      numberInput1: true,
+      numberInput2: false,
+      strInput1: 1,
+      strInput2: 2,
+      boolInput1: 'true',
+      boolInput2: 'false',
+    },
+    { catchInteractorFailure: false },
+  );
 
   const dontExist: string = result.dontExist;
 
@@ -64,14 +67,17 @@ const testInvalid = async () => {
 };
 
 const testValid = async () => {
-  const { result } = await TestOrganizer.call({
-    numberInput1: 1,
-    numberInput2: 2,
-    strInput1: 'strInput1',
-    strInput2: 'strInput2',
-    boolInput1: true,
-    boolInput2: false,
-  });
+  const { result } = await TestOrganizer.call(
+    {
+      numberInput1: 1,
+      numberInput2: 2,
+      strInput1: 'strInput1',
+      strInput2: 'strInput2',
+      boolInput1: true,
+      boolInput2: false,
+    },
+    { catchInteractorFailure: false },
+  );
 
   boolTest(result.isFailure());
   boolTest(result.isSuccess());
