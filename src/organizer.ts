@@ -1,7 +1,7 @@
-import { Interactor } from './interactor';
+import { AnyObject, Interactor } from './interactor';
 
 interface InteractorClassType extends Function {
-  new (...args: any[]): Interactor;
+  new (context: AnyObject): Interactor;
 }
 
 export class Organizer extends Interactor {
@@ -9,7 +9,7 @@ export class Organizer extends Interactor {
 
   async call(): Promise<void> {
     for (const InteractorClass of this.Interactors!) {
-      await InteractorClass.call(this.context);
+      await InteractorClass.call(this.context, false);
     }
   }
 }

@@ -47,7 +47,7 @@ const testValid = async () => {
     numberInput: 1,
     strInput: 'str',
     boolInput: true,
-  });
+  }, false);
 
   boolTest(result.isFailure());
   boolTest(result.isSuccess());

@@ -46,7 +46,7 @@ const testInvalid = async () => {
     strInput2: 2,
     boolInput1: 'true',
     boolInput2: 'false',
-  });
+  }, false);
 
   const dontExist: string = result.dontExist;
 
