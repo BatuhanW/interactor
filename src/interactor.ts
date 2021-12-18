@@ -13,7 +13,7 @@ export type AnyObject = Record<string, any>;
 export class Interactor<Input extends AnyObject = AnyObject, Output extends AnyObject = AnyObject> {
   static async call<Params extends AnyObject = AnyObject, Result extends AnyObject = AnyObject>(
     context: Params,
-    catchInteractorFailure: boolean = true,
+    { catchInteractorFailure } = { catchInteractorFailure: true },
   ): Promise<InteractorResult<Params, Result>> {
     const interactor: Interactor<Params, Result> = new this(context);
 

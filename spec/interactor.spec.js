@@ -58,7 +58,7 @@ describe('Interactor', () => {
     describe('when catchInteractorFailure false', () => {
       describe('when success', () => {
         it('returns context', async () => {
-          const { result } = await Interactor.call({ test: 1 }, false);
+          const { result } = await Interactor.call({ test: 1 }, { catchInteractorFailure: false });
 
           expect(result).toBeInstanceOf(Context);
 
@@ -76,7 +76,7 @@ describe('Interactor', () => {
             const interactor = buildInteractor(callFn, rollbackFn);
 
             try {
-              await interactor.call({ test: 1 }, false);
+              await interactor.call({ test: 1 }, { catchInteractorFailure: false });
             } catch (e) {
               expect(e).toBeInstanceOf(InteractorFailure);
               expect(e.name).toStrictEqual('InteractorFailure');
@@ -97,7 +97,7 @@ describe('Interactor', () => {
             const interactor = buildInteractor(callFn);
 
             try {
-              await interactor.call({ test: 1 }, false);
+              await interactor.call({ test: 1 }, { catchInteractorFailure: false });
             } catch (e) {
               expect(e).toBeInstanceOf(Error);
               expect(e.message).toStrictEqual('TestError');
@@ -124,7 +124,7 @@ describe('Interactor', () => {
         );
 
         try {
-          await failureInteractor.call(context, false);
+          await failureInteractor.call(context, { catchInteractorFailure: false });
         } catch (e) {
           expect(e.context.initialValue).toStrictEqual(true);
 
@@ -143,11 +143,16 @@ describe('Interactor', () => {
             throwsInteractorFailure: true,
           });
 
-          const { result: result1 } = await interactor1.call({ initialValue: true }, false);
-          const { result: result2 } = await interactor2.call(result1, false);
+          const { result: result1 } = await interactor1.call(
+            { initialValue: true },
+            { catchInteractorFailure: false },
+          );
+          const { result: result2 } = await interactor2.call(result1, {
+            catchInteractorFailure: false,
+          });
 
           try {
-            await failureInteractor.call(result2, false);
+            await failureInteractor.call(result2, { catchInteractorFailure: false });
           } catch (e) {
             assertRollbackContext(e.context);
           }
@@ -166,11 +171,16 @@ describe('Interactor', () => {
             throwsInteractorFailure: false,
           });
 
-          const { result: result1 } = await interactor1.call({ initialValue: true }, false);
-          const { result: result2 } = await interactor2.call(result1, false);
+          const { result: result1 } = await interactor1.call(
+            { initialValue: true },
+            { catchInteractorFailure: false },
+          );
+          const { result: result2 } = await interactor2.call(result1, {
+            catchInteractorFailure: false,
+          });
 
           try {
-            await failureInteractor.call(result2, false);
+            await failureInteractor.call(result2, { catchInteractorFailure: false });
           } catch (e) {}
 
           [result1, result2].forEach((result) => {

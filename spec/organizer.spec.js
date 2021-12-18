@@ -69,7 +69,7 @@ describe('Organizer', () => {
           const organizer = buildOrganizer(...interactors);
 
           try {
-            await organizer.call({ initialValue: true }, false);
+            await organizer.call({ initialValue: true }, { catchInteractorFailure: false });
           } catch (error) {
             assertRollbackContext(error.context);
           }
