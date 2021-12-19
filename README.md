@@ -228,3 +228,17 @@ class ChargeCustomer extends Interactor {
   }
 }
 ```
+
+It's also possible to organize other organizers.
+
+```typescript
+class PlaceOrder extends Organizer {
+  Interactors = [
+    CreateOrder, // => CreateOrder interactor
+    ReserveProduct, // ReserveProduct organizer => [ValidateStock, CreateReservation]
+    SendNotifications, // SendNotifications organizer => [SendEmail, SendPush, SendSMS]
+  ];
+}
+```
+
+Check `./examples` directory for more.
