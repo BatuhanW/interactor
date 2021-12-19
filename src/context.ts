@@ -39,7 +39,7 @@ export class Context {
     return this._isFailure;
   }
 
-  public fail(context: AnyObject = {}): Promise<void> {
+  public fail(context: AnyObject = {}): void {
     Object.defineProperties(this, buildDefinePropertiesDescriptor(context, false));
 
     this._isFailure = true;
