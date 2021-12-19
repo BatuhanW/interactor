@@ -1,4 +1,4 @@
-import { AnyObject, Interactor } from './interactor';
+import { Interactor } from './interactor';
 
 interface InteractorClassType extends Function {
   new (...args: any[]): Interactor;
